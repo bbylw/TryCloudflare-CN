@@ -1,64 +1,59 @@
-# TryCloudflare 中文教程
+# TryCloudflare（快速隧道 / Quick Tunnels）是什么
 
-基于 [Cloudflare 官方文档 — Quick Tunnels](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/) 翻译与整理的中文教程网站，介绍如何使用 **TryCloudflare** 快速将本地服务安全暴露到公网。
+**TryCloudflare** 是 Cloudflare Tunnel 提供的一项免费、零配置的能力：无需拥有域名、无需修改 DNS，一行命令即可把本地运行的 Web 服务通过 Cloudflare 全球网络暴露到公网。
 
-## ✨ 特性
+> 官方文档：<https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/>
 
-- **纯静态站点** — 单页 HTML + 编译后的 Tailwind CSS，无需后端
-- **Tailwind CSS v4** — CSS-first 配置（`@theme`），自定义品牌色与字体
-- **真实 Cloudflare 标识** — 内联 SVG 云标 + favicon
-- **精致视觉** — 渐变光晕、网格、噪点氛围层；滚动渐显动效
-- **响应式** — 桌面双栏（含 sticky 目录轨道），移动端自动折叠
-- **可访问性** — 尊重 `prefers-reduced-motion`
+## 🚀 快速开始
 
-## 📦 技术栈
+### 1. 安装 cloudflared
 
-- HTML5
-- Tailwind CSS v4（`@tailwindcss/cli`）
-- 字体：Space Grotesk / JetBrains Mono / Noto Sans SC（Google Fonts）
-
-## 🚀 本地开发
+按[官方安装说明](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/)安装命令行工具，版本需 ≥ `2020.5.1`。
 
 ```bash
-# 安装依赖
-npm install
-
-# 编译 CSS（生成 styles.css）
-npm run build
-
-# 或监听模式，改动后自动重新编译
-npm run watch
+# macOS
+brew install cloudflare/cloudflare/cloudflared
 ```
 
-编译完成后，直接用浏览器打开 `index.html` 即可预览。
+### 2. 启动本地服务
 
-## 📁 项目结构
+在 `localhost` 上运行一个可被 `cloudflared` 连接的服务，例如监听 `http://localhost:8080`。
 
-```
-.
-├── index.html        # 站点主页面（Tailwind 工具类）
-├── styles.css         # 编译后的样式（由 src/input.css 生成）
-├── src/
-│   └── input.css      # Tailwind 入口：@theme 主题与自定义工具类
-├── package.json       # 构建脚本与依赖
-└── .gitignore
+### 3. 开启隧道
+
+```bash
+cloudflared tunnel --url http://localhost:8080
 ```
 
-## 📝 内容概要
+终端会打印一个随机生成的 `*.trycloudflare.com` 子域名，把它分享给任何人即可从公网访问你的本地服务。
 
-| 章节 | 内容 |
+> ⚠️ 若 `.cloudflared` 目录中存在 `config.yaml`，快速隧道暂不支持，请临时重命名该文件。
+
+## 💡 典型使用场景
+
+- 把笔记本上的项目临时分享给他人，对方无需和你处于同一网络
+- 创建免费隧道，在不同浏览器中测试新站点的兼容性
+- 用 Pingdom / WebPageTest 等工具连到随机子域名，从不同地区做速度测试
+
+## ⚠️ 限制（仅适用于快速隧道）
+
+| 限制 | 说明 |
 | --- | --- |
-| 什么是快速隧道 | Quick Tunnels 原理与适用场景 |
-| 三步上手 | 安装 cloudflared → 启动本地服务 → 运行命令 |
-| 终端实战 | 完整命令行演示 |
-| 能力与限制 | 200 并发上限、不支持 SSE |
-| 常见问题 | 使用场景、免费原因、429、config.yaml |
-| 法律声明 | 许可协议、服务条款、隐私政策 |
+| 并发请求上限 | 同时代理的在途请求硬上限为 **200**，触顶时返回 `429` |
+| 不支持 SSE | 不支持 Server-Sent Events |
 
-## ⚠️ 说明
+如需突破限制，请[注册 Cloudflare 账户](https://dash.cloudflare.com/sign-up)并[创建托管的 Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/get-started/)用于生产环境。
 
-快速隧道仅用于**测试与开发**，不保证 SLA 或在线率，请勿用于生产部署。生产环境请创建远程托管的 Cloudflare Tunnel。
+## ❓ 为什么 Cloudflare 免费提供？
 
-## 📄 许可
+- 希望更多用户体验 Cloudflare Tunnel 的速度与安全，试用后用于生产站点
+- 降低试用门槛：以往需拥有域名并配置 DNS，现在无需这些负担
+- 不保证 SLA / 在线率，Cloudflare 会在此通道上试验新功能，为生产发布前提供测试连接组
 
-本教程内容整理自 Cloudflare 官方文档，仅供学习参考。
+## 📄 法律声明
+
+安装 `cloudflared` 即表示你接受 [Cloudflare 许可协议](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/license/)、[服务条款](https://www.cloudflare.com/terms/)与[隐私政策](https://www.cloudflare.com/privacypolicy/)。
+
+---
+
+> 本仓库为上述内容的中文教程网站源码（基于 Tailwind CSS v4 构建）。详见 [`index.html`](./index.html)。
