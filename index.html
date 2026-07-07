@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Tunnels 中文教程 · Cloudflare 快速隧道</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 116'%3E%3Cpath fill='%23f6821f' d='M202.36 90.13l-2.42-.83c-.28 4.9-2.06 9.32-4.98 12.83l4.65 2.68c.28.16.47.44.52.75.05.31-.03.62-.23.86l-.06.06c1.98-.55 3.75-1.7 5.06-3.32 3.31-4.1 5.24-9.16 5.5-14.42l-7.56 1.42a2.9 2.9 0 0 1 0-.66zM128 0C63.53 0 6.94 43.85 6.94 43.85l-4.6 3.13a3.5 3.5 0 0 0-1.5 3.63l7.65 41.9a4.24 4.24 0 0 0 4.17 3.48h185.06c1.66 0 3.16-.97 3.85-2.48l7.5-16.36-7.03-38.5S192.47 0 128 0z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body class="relative min-h-dvh overflow-x-hidden">
+
+<!-- atmosphere -->
+<div class="bg-mesh fixed inset-0 -z-10"></div>
+<div class="grid-overlay fixed inset-0 -z-10 opacity-40"></div>
+<div class="grain fixed inset-0 -z-10 opacity-[0.035] pointer-events-none"></div>
+
+<!-- nav -->
+<header class="fixed top-0 inset-x-0 z-50 border-b border-line-soft bg-ink/60 backdrop-blur-xl">
+  <div class="mx-auto flex max-w-[1180px] items-center justify-between px-5 sm:px-10 py-4">
+    <div class="flex items-center gap-2.5 font-display font-bold tracking-tight text-base">
+      <span class="block h-7 w-7 text-flare drop-shadow-[0_2px_8px_rgba(246,130,31,0.35)]" aria-label="Cloudflare">
+        <svg viewBox="0 0 256 116" class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" role="img"><path fill="currentColor" d="M202.36 90.13l-2.42-.83c-.28 4.9-2.06 9.32-4.98 12.83l4.65 2.68c.28.16.47.44.52.75.05.31-.03.62-.23.86l-.06.06c1.98-.55 3.75-1.7 5.06-3.32 3.31-4.1 5.24-9.16 5.5-14.42l-7.56 1.42a2.9 2.9 0 0 1 0-.66zM128 0C63.53 0 6.94 43.85 6.94 43.85l-4.6 3.13a3.5 3.5 0 0 0-1.5 3.63l7.65 41.9a4.24 4.24 0 0 0 4.17 3.48h185.06c1.66 0 3.16-.97 3.85-2.48l7.5-16.36-7.03-38.5S192.47 0 128 0z"/></svg>
+      </span>
+      <span>Quick Tunnels 中文教程</span>
+    </div>
+    <nav class="hidden md:flex items-center gap-1.5">
+      <a href="#intro" class="rounded-lg px-3 py-1.5 text-sm font-medium text-fog transition hover:bg-white/5 hover:text-white">简介</a>
+      <a href="#how" class="rounded-lg px-3 py-1.5 text-sm font-medium text-fog transition hover:bg-white/5 hover:text-white">使用方式</a>
+      <a href="#demo" class="rounded-lg px-3 py-1.5 text-sm font-medium text-fog transition hover:bg-white/5 hover:text-white">实战演示</a>
+      <a href="#limits" class="rounded-lg px-3 py-1.5 text-sm font-medium text-fog transition hover:bg-white/5 hover:text-white">限制</a>
+      <a href="#faq" class="rounded-lg px-3 py-1.5 text-sm font-medium text-fog transition hover:bg-white/5 hover:text-white">常见问题</a>
+    </nav>
+    <a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/" target="_blank" rel="noopener" class="rounded-lg bg-flare px-4 py-2 font-mono text-[13px] font-bold text-[#1a1206] transition hover:-translate-y-0.5 hover:shadow-[0_6px_18px_rgba(246,130,31,0.45)]">官方文档 ↗</a>
+  </div>
+</header>
+
+<div class="mx-auto grid max-w-[1180px] grid-cols-1 gap-12 px-5 sm:px-10 lg:grid-cols-[220px_1fr]">
+
+  <!-- rail -->
+  <aside class="hidden lg:block">
+    <div class="sticky top-24 pt-28">
+      <div class="mb-3.5 pl-3.5 font-mono text-[11px] uppercase tracking-[2px] text-fog">目录导航</div>
+      <nav class="flex flex-col">
+        <a href="#intro"  class="rail-link flex items-center gap-2.5 rounded-lg border-l-2 border-transparent py-2 pl-3.5 pr-3 text-sm text-fog transition hover:bg-white/[0.04] hover:text-white"><span class="dot h-1.5 w-1.5 rounded-full bg-line"></span>什么是快速隧道</a>
+        <a href="#how"    class="rail-link flex items-center gap-2.5 rounded-lg border-l-2 border-transparent py-2 pl-3.5 pr-3 text-sm text-fog transition hover:bg-white/[0.04] hover:text-white"><span class="dot h-1.5 w-1.5 rounded-full bg-line"></span>三步上手</a>
+        <a href="#demo"   class="rail-link flex items-center gap-2.5 rounded-lg border-l-2 border-transparent py-2 pl-3.5 pr-3 text-sm text-fog transition hover:bg-white/[0.04] hover:text-white"><span class="dot h-1.5 w-1.5 rounded-full bg-line"></span>终端实战</a>
+        <a href="#limits" class="rail-link flex items-center gap-2.5 rounded-lg border-l-2 border-transparent py-2 pl-3.5 pr-3 text-sm text-fog transition hover:bg-white/[0.04] hover:text-white"><span class="dot h-1.5 w-1.5 rounded-full bg-line"></span>能力边界</a>
+        <a href="#faq"    class="rail-link flex items-center gap-2.5 rounded-lg border-l-2 border-transparent py-2 pl-3.5 pr-3 text-sm text-fog transition hover:bg-white/[0.04] hover:text-white"><span class="dot h-1.5 w-1.5 rounded-full bg-line"></span>常见问题</a>
+        <a href="#legal"  class="rail-link flex items-center gap-2.5 rounded-lg border-l-2 border-transparent py-2 pl-3.5 pr-3 text-sm text-fog transition hover:bg-white/[0.04] hover:text-white"><span class="dot h-1.5 w-1.5 rounded-full bg-line"></span>法律声明</a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <main class="min-w-0 pt-28 pb-32">
+
+    <!-- HERO -->
+    <section id="top" class="pb-16 pt-10">
+      <span class="reveal inline-flex items-center gap-2.5 rounded-full border border-flare/35 bg-flare/[0.14] px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[1.5px] text-flare">
+        <span class="animate-pulse-dot h-1.75 w-1.75 rounded-full bg-mint"></span>
+        Cloudflare Tunnel · 测试 / 开发专用
+      </span>
+      <h1 class="reveal reveal-d1 mt-6 font-display text-[clamp(38px,6vw,68px)] font-bold leading-[1.05] tracking-[-1.5px] text-balance">
+        几秒将本地服务<br>送达<span class="text-grad">公网</span>世界
+      </h1>
+      <p class="reveal reveal-d2 mt-5 max-w-[60ch] text-[clamp(16px,2vw,19px)] text-fog">
+        无需域名、无需配置 DNS。借助 TryCloudflare，一条命令即可在 <span class="font-mono text-flare">trycloudflare.com</span> 上生成随机子域名，把 localhost 的安全流量经由 Cloudflare 全球网络代理出去。
+      </p>
+      <div class="reveal reveal-d3 mt-8 flex flex-wrap gap-3.5">
+        <a href="#how" class="rounded-xl bg-flare px-6 py-3 font-display text-[15px] font-semibold text-[#1a1206] shadow-[0_8px_24px_rgba(246,130,31,0.35)] transition hover:-translate-y-0.5 hover:shadow-[0_12px_30px_rgba(246,130,31,0.5)]">🚀 立即开始 →</a>
+        <a href="#demo" class="rounded-xl border border-line bg-transparent px-6 py-3 font-display text-[15px] font-semibold text-white transition hover:border-flare hover:text-flare">查看终端演示</a>
+      </div>
+      <div class="reveal reveal-d3 mt-13 flex flex-wrap gap-9">
+        <div><div class="font-display text-3xl font-bold"><b class="text-flare">1</b> 条命令</div><div class="mt-1 text-[13px] text-fog">启动免费隧道</div></div>
+        <div><div class="font-display text-3xl font-bold"><b class="text-flare">0</b> 域名配置</div><div class="mt-1 text-[13px] text-fog">免 DNS / Nameserver</div></div>
+        <div><div class="font-display text-3xl font-bold"><b class="text-flare">200</b> 并发</div><div class="mt-1 text-[13px] text-fog">在途请求上限</div></div>
+      </div>
+    </section>
+
+    <!-- INTRO -->
+    <section id="intro" class="scroll-mt-24 border-t border-line-soft py-16">
+      <div class="reveal font-mono text-[12px] uppercase tracking-[2px] text-signal">01 / 概览</div>
+      <h2 class="reveal reveal-d1 mt-3 font-display text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15] tracking-[-0.8px]">什么是快速隧道（Quick Tunnels）？</h2>
+      <p class="reveal reveal-d1 mt-4 max-w-[64ch] text-[17px] text-fog">开发者可以使用 <strong class="text-white">TryCloudflare</strong> 工具来体验 Cloudflare Tunnel，而无需将站点添加到 Cloudflare 的 DNS。它会启动一个进程，在 <span class="font-mono text-flare">trycloudflare.com</span> 上生成一个随机子域名，并将发往该子域名的请求经由 Cloudflare 网络代理转发到你本地运行的 Web 服务器。</p>
+
+      <div class="mt-9 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="reveal group relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-surface to-ink-2 p-6 transition hover:-translate-y-1 hover:border-flare/40">
+          <div class="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-flare/30 bg-flare/[0.14] font-mono text-lg font-bold text-flare">⚡</div>
+          <h3 class="font-display text-lg font-semibold">零配置</h3>
+          <p class="mt-2 text-[14.5px] text-fog">不需要拥有域名，也无需把 DNS 指向 Cloudflare 的 nameserver，开箱即用。</p>
+          <div class="pointer-events-none absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(246,130,31,0.25),transparent_70%)] opacity-0 transition group-hover:opacity-100"></div>
+        </div>
+        <div class="reveal reveal-d1 group relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-surface to-ink-2 p-6 transition hover:-translate-y-1 hover:border-signal/40">
+          <div class="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-signal/30 bg-signal/[0.12] font-mono text-lg font-bold text-signal">🌐</div>
+          <h3 class="font-display text-lg font-semibold">全球加速</h3>
+          <p class="mt-2 text-[14.5px] text-fog">流量经过 Cloudflare 边缘网络，自动享受其速度与安全层防护。</p>
+          <div class="pointer-events-none absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(59,157,255,0.25),transparent_70%)] opacity-0 transition group-hover:opacity-100"></div>
+        </div>
+        <div class="reveal reveal-d2 group relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-surface to-ink-2 p-6 transition hover:-translate-y-1 hover:border-flare/40">
+          <div class="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-flare/30 bg-flare/[0.14] font-mono text-lg font-bold text-flare">🔒</div>
+          <h3 class="font-display text-lg font-semibold">安全穿透</h3>
+          <p class="mt-2 text-[14.5px] text-fog">本地服务无需暴露公网端口，出站连接即可被外部安全访问。</p>
+          <div class="pointer-events-none absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(246,130,31,0.25),transparent_70%)] opacity-0 transition group-hover:opacity-100"></div>
+        </div>
+        <div class="reveal reveal-d1 group relative overflow-hidden rounded-2xl border border-line bg-gradient-to-br from-surface to-ink-2 p-6 transition hover:-translate-y-1 hover:border-signal/40 sm:col-span-2 lg:col-span-3">
+          <div class="mb-4 grid h-10 w-10 place-items-center rounded-xl border border-signal/30 bg-signal/[0.12] font-mono text-lg font-bold text-signal">🧪</div>
+          <h3 class="font-display text-lg font-semibold">为测试与开发而生</h3>
+          <p class="mt-2 max-w-[70ch] text-[14.5px] text-fog">快速隧道是体验 Cloudflare Tunnel 的最佳入口 —— 想分享笔记本上的项目、做跨浏览器兼容测试，或从不同地区跑速度测试，都能一键搞定。若需用于生产，请创建远程托管隧道。</p>
+          <div class="pointer-events-none absolute -bottom-10 -right-10 h-36 w-36 rounded-full bg-[radial-gradient(circle,rgba(59,157,255,0.2),transparent_70%)] opacity-0 transition group-hover:opacity-100"></div>
+        </div>
+      </div>
+
+      <div class="reveal mt-6 flex gap-4 rounded-2xl border border-flare/35 bg-flare/[0.1] p-5">
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-flare/20 font-mono font-bold text-flare">!</div>
+        <p class="text-[14.5px] text-white"><strong class="text-flare">注意：</strong>快速隧道仅用于<strong class="text-white">测试与开发</strong>。Cloudflare 不保证其 SLA 或在线率，且可能在该通道上试验新功能。请勿用它部署生产网站。</p>
+      </div>
+    </section>
+
+    <!-- HOW -->
+    <section id="how" class="scroll-mt-24 border-t border-line-soft py-16">
+      <div class="reveal font-mono text-[12px] uppercase tracking-[2px] text-signal">02 / 上手</div>
+      <h2 class="reveal reveal-d1 mt-3 font-display text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15] tracking-[-0.8px]">三步启动你的第一条隧道</h2>
+      <p class="reveal reveal-d1 mt-4 max-w-[64ch] text-[17px] text-fog">只要本地有一个可访问的服务，三步即可把它分享到任意网络中的设备。</p>
+
+      <div class="mt-8 flex flex-col">
+        <!-- step 1 -->
+        <div class="reveal step relative grid grid-cols-[54px_1fr] gap-5 pb-5">
+          <div class="z-10 grid h-14 w-14 place-items-center rounded-2xl border border-flare bg-ink-2 font-display text-xl font-bold text-flare shadow-[0_0_0_6px_var(--color-ink)]">1</div>
+          <div class="pt-1.5">
+            <h3 class="font-display text-xl font-semibold">安装 cloudflared</h3>
+            <p class="mt-1.5 text-[15px] text-fog">按<a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/" target="_blank" rel="noopener" class="text-flare hover:underline">官方安装说明</a>安装命令行工具。若已有旧版本，请升级到 <code class="rounded-md border border-line bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">2020.5.1</code> 或更高。</p>
+          </div>
+        </div>
+        <!-- step 2 -->
+        <div class="reveal reveal-d1 step relative grid grid-cols-[54px_1fr] gap-5 py-5">
+          <div class="z-10 grid h-14 w-14 place-items-center rounded-2xl border border-flare bg-ink-2 font-display text-xl font-bold text-flare shadow-[0_0_0_6px_var(--color-ink)]">2</div>
+          <div class="pt-1.5">
+            <h3 class="font-display text-xl font-semibold">启动本地 Web 服务</h3>
+            <p class="mt-1.5 text-[15px] text-fog">在 localhost 上运行一个可供 <code class="rounded-md border border-line bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">cloudflared</code> 连接的服务器，例如监听 <code class="rounded-md border border-line bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">http://localhost:8080</code> 的服务。</p>
+          </div>
+        </div>
+        <!-- step 3 -->
+        <div class="reveal reveal-d2 step relative grid grid-cols-[54px_1fr] gap-5 pt-5">
+          <div class="z-10 grid h-14 w-14 place-items-center rounded-2xl border border-flare bg-ink-2 font-display text-xl font-bold text-flare shadow-[0_0_0_6px_var(--color-ink)]">3</div>
+          <div class="pt-1.5">
+            <h3 class="font-display text-xl font-semibold">运行隧道命令</h3>
+            <p class="mt-1.5 text-[15px] text-fog"><code class="rounded-md border border-line bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">cloudflared</code> 会自动生成随机子域名并打印到终端，供你使用和分享。</p>
+            <pre class="mt-3 overflow-x-auto rounded-xl border border-line bg-[#0d1320] p-4 font-mono text-[14px] text-[#d6e2f0]">cloudflared tunnel --url http://localhost:8080</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal mt-6 flex gap-4 rounded-2xl border border-signal/30 bg-signal/[0.1] p-5">
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-signal/20 font-mono font-bold text-signal">i</div>
+        <p class="text-[14.5px] text-white"><strong class="text-signal">提示：</strong>若 <code class="font-mono text-flare">.cloudflared</code> 目录中存在 <code class="font-mono text-flare">config.yaml</code> 配置文件，快速隧道暂不支持。请临时重命名该文件后再试。</p>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section id="demo" class="scroll-mt-24 border-t border-line-soft py-16">
+      <div class="reveal font-mono text-[12px] uppercase tracking-[2px] text-signal">03 / 实战</div>
+      <h2 class="reveal reveal-d1 mt-3 font-display text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15] tracking-[-0.8px]">终端实战演示</h2>
+      <p class="reveal reveal-d1 mt-4 max-w-[64ch] text-[17px] text-fog">以下是一个完整的 macOS 示例：安装、确认本地服务、启动隧道并获取公开链接。</p>
+
+      <div class="reveal mt-2 overflow-hidden rounded-2xl border border-line bg-[#070b12] shadow-[0_24px_60px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-2 border-b border-line-soft bg-[#0c1119] px-4 py-3">
+          <span class="h-3 w-3 rounded-full bg-[#ff5f56]"></span>
+          <span class="h-3 w-3 rounded-full bg-[#ffbd2e]"></span>
+          <span class="h-3 w-3 rounded-full bg-[#27c93f]"></span>
+          <span class="ml-2.5 font-mono text-[12px] text-fog">zsh — cloudflared</span>
+        </div>
+        <div class="space-y-1 p-5 font-mono text-[14px] leading-[1.9]">
+          <div><span class="text-mint">$</span> <span class="text-fog"># 1. 安装 cloudflared（Homebrew）</span></div>
+          <div><span class="text-mint">$</span> <span class="text-white">brew install cloudflare/cloudflare/cloudflared</span></div>
+          <div>&nbsp;</div>
+          <div><span class="text-mint">$</span> <span class="text-fog"># 2. 本地服务已在 8080 端口运行</span></div>
+          <div><span class="text-signal">→ http://localhost:8080 可正常访问</span></div>
+          <div>&nbsp;</div>
+          <div><span class="text-mint">$</span> <span class="text-white">cloudflared tunnel --url http://localhost:8080</span></div>
+          <div>&nbsp;</div>
+          <div><span class="text-signal">2024-01-12T10:24:01Z INF Registered tunnel connection</span></div>
+          <div class="text-flare font-bold">+-----------------------------------------------------------------------------+</div>
+          <div class="text-flare font-bold">|  Your quick Tunnel has been created! Visit it at:                             |</div>
+          <div class="text-flare font-bold">|  https://a1b2-c3d4.trycloudflare.com                                       |</div>
+          <div class="text-flare font-bold">+-----------------------------------------------------------------------------+</div>
+          <div>&nbsp;</div>
+          <div><span class="text-fog"># 复制该链接，即可在任意设备上访问你的本地服务</span><span class="animate-blink ml-0.5 inline-block h-4 w-2 -translate-y-0.5 bg-flare align-middle"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIMITS -->
+    <section id="limits" class="scroll-mt-24 border-t border-line-soft py-16">
+      <div class="reveal font-mono text-[12px] uppercase tracking-[2px] text-signal">04 / 边界</div>
+      <h2 class="reveal reveal-d1 mt-3 font-display text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15] tracking-[-0.8px]">能力与限制</h2>
+      <p class="reveal reveal-d1 mt-4 max-w-[64ch] text-[17px] text-fog">快速隧道为免费测试通道，以下限制仅适用于它。若需突破限制，请注册 Cloudflare 账户并创建托管的 Cloudflare Tunnel。</p>
+
+      <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="reveal rounded-2xl border border-line bg-surface p-5.5 transition hover:border-flare/40">
+          <div class="mb-2.5 font-mono text-[12px] uppercase tracking-[1px] text-flare">并发上限</div>
+          <h4 class="font-display text-lg font-semibold">200 个在途请求</h4>
+          <p class="mt-2 text-[14.5px] text-fog">快速隧道对同时代理的请求数有硬性上限，目前为 <span class="rounded bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">200</span>。一旦触顶，HTTP 响应将返回 <span class="rounded bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">429</span> 状态码。</p>
+        </div>
+        <div class="reveal reveal-d1 rounded-2xl border border-line bg-surface p-5.5 transition hover:border-flare/40">
+          <div class="mb-2.5 font-mono text-[12px] uppercase tracking-[1px] text-flare">协议支持</div>
+          <h4 class="font-display text-lg font-semibold">不支持 SSE</h4>
+          <p class="mt-2 text-[14.5px] text-fog">快速隧道不支持 Server-Sent Events（<span class="rounded bg-[#0d1320] px-2 py-0.5 font-mono text-[13px] text-[#f0a35e]">SSE</span>），需要实时流式推送的场景请改用托管隧道。</p>
+        </div>
+      </div>
+
+      <div class="reveal mt-6 flex gap-4 rounded-2xl border border-flare/35 bg-flare/[0.1] p-5">
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-flare/20 font-mono font-bold text-flare">!</div>
+        <p class="text-[14.5px] text-white"><strong class="text-flare">升级路径：</strong>为避免上述限制，请<a href="https://dash.cloudflare.com/sign-up" target="_blank" rel="noopener" class="text-flare hover:underline">注册 Cloudflare 账户</a>，并<a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/get-started/" target="_blank" rel="noopener" class="text-flare hover:underline">创建 Cloudflare Tunnel</a> 用于生产环境。</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="scroll-mt-24 border-t border-line-soft py-16">
+      <div class="reveal font-mono text-[12px] uppercase tracking-[2px] text-signal">05 / FAQ</div>
+      <h2 class="reveal reveal-d1 mt-3 font-display text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15] tracking-[-0.8px]">常见问题</h2>
+
+      <div class="mt-8 flex flex-col gap-3">
+        <details class="reveal faq group rounded-2xl border border-line bg-surface overflow-hidden transition open:border-flare/40" open>
+          <summary class="flex cursor-pointer items-center justify-between gap-4 px-5.5 py-5 font-display text-[16.5px] font-semibold list-none">
+            TryCloudflare 有哪些使用场景？
+            <span class="font-mono text-2xl text-flare transition-transform duration-300 group-open:rotate-45">+</span>
+          </summary>
+          <div class="px-5.5 pb-5 text-[15px] text-fog">
+            <ul class="ml-5 list-disc space-y-2">
+              <li>为笔记本上想分享给他人的项目创建一个 Web 服务器，对方可在不同网络中访问。</li>
+              <li>创建免费隧道、在不同浏览器中测试链接，验证新站点的浏览器兼容性。</li>
+              <li>使用 Pingdom 或 WebPageTest 等工具，连接到随机子域名，从不同地区进行速度测试。</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="reveal reveal-d1 faq group rounded-2xl border border-line bg-surface overflow-hidden transition open:border-flare/40">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 px-5.5 py-5 font-display text-[16.5px] font-semibold list-none">
+            为什么 Cloudflare 免费提供这项服务？
+            <span class="font-mono text-2xl text-flare transition-transform duration-300 group-open:rotate-45">+</span>
+          </summary>
+          <div class="px-5.5 pb-5 text-[15px] text-fog">
+            <ul class="ml-5 list-disc space-y-2">
+              <li>希望更多用户体验 Cloudflare Tunnel 的速度与安全提升，试用后将其用于生产站点。</li>
+              <li>Cloudflare 以往功能要求拥有域名、配置 DNS 记录；希望让更多产品无需这些负担即可试用。</li>
+              <li>不保证 SLA 或在线率，计划在免费隧道上测试新功能，为生产部署前提供测试连接组。免费隧道仅供测试与开发。</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="reveal reveal-d2 faq group rounded-2xl border border-line bg-surface overflow-hidden transition open:border-flare/40">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 px-5.5 py-5 font-display text-[16.5px] font-semibold list-none">
+            快速隧道何时会返回 429？
+            <span class="font-mono text-2xl text-flare transition-transform duration-300 group-open:rotate-45">+</span>
+          </summary>
+          <div class="px-5.5 pb-5 text-[15px] text-fog">
+            当并发在途请求数达到硬性上限（目前 <span class="font-mono text-flare">200</span>）时，新请求会被拒绝并返回 <span class="font-mono text-flare">429</span> 状态码。降低并发或改用托管隧道即可解决。
+          </div>
+        </details>
+
+        <details class="reveal reveal-d3 faq group rounded-2xl border border-line bg-surface overflow-hidden transition open:border-flare/40">
+          <summary class="flex cursor-pointer items-center justify-between gap-4 px-5.5 py-5 font-display text-[16.5px] font-semibold list-none">
+            config.yaml 会影响快速隧道吗？
+            <span class="font-mono text-2xl text-flare transition-transform duration-300 group-open:rotate-45">+</span>
+          </summary>
+          <div class="px-5.5 pb-5 text-[15px] text-fog">
+            会。若 <code class="font-mono text-flare">.cloudflared</code> 目录中存在 <code class="font-mono text-flare">config.yaml</code>，快速隧道暂不支持该功能，请临时重命名该文件后再使用。
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- LEGAL -->
+    <section id="legal" class="scroll-mt-24 border-t border-line-soft py-16">
+      <div class="reveal font-mono text-[12px] uppercase tracking-[2px] text-signal">06 / 法律</div>
+      <h2 class="reveal reveal-d1 mt-3 font-display text-[clamp(26px,3.6vw,38px)] font-bold leading-[1.15] tracking-[-0.8px]">法律声明</h2>
+      <p class="reveal reveal-d1 mt-4 max-w-[64ch] text-[17px] text-fog">安装即代表你接受 Cloudflare 的相关协议。</p>
+      <div class="reveal mt-6 flex gap-4 rounded-2xl border border-signal/30 bg-signal/[0.1] p-5">
+        <div class="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-signal/20 font-mono font-bold text-signal">i</div>
+        <p class="text-[14.5px] text-white">你安装 cloudflared 软件即表示签字确认接受 <a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/downloads/license/" target="_blank" rel="noopener" class="text-flare hover:underline">Cloudflare 许可协议</a>、<a href="https://www.cloudflare.com/terms/" target="_blank" rel="noopener" class="text-flare hover:underline">服务条款</a>与 <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener" class="text-flare hover:underline">隐私政策</a>。</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer class="relative z-10 border-t border-line-soft bg-ink-2 px-5 py-11 text-center sm:px-10">
+  <div class="font-display text-base font-bold">Quick Tunnels 中文教程</div>
+  <p class="mt-2 text-[13.5px] text-fog">本教程内容整理自 <a href="https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/" target="_blank" rel="noopener" class="text-flare hover:underline">Cloudflare 官方文档</a>，仅供学习参考。</p>
+</footer>
+
+<script>
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // active rail + nav link
+  const sections = [...document.querySelectorAll('main section[id]')];
+  const railLinks = [...document.querySelectorAll('.rail-link')];
+  const navLinks = [...document.querySelectorAll('.md\\:flex a')];
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.id;
+        railLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id));
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => spy.observe(s));
+
+  // rail active styles
+  const style = document.createElement('style');
+  style.textContent = `.rail-link.active{color:#fff;background:rgba(246,130,31,0.14);border-left-color:var(--color-flare);} .rail-link.active .dot{background:var(--color-flare);box-shadow:0 0 10px var(--color-flare);} .md\\:flex a.active{color:#fff;background:rgba(255,255,255,0.05);}`;
+  document.head.appendChild(style);
+</script>
+
+</body>
+</html>
